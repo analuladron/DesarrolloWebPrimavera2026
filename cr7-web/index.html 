@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cristiano Ronaldo | Vida y Obra</title>
+  <title>Cristiano Ronaldo | Vida y Logros</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -83,7 +83,7 @@
 
           <div class="callout">
             <p class="callout__text">
-              Si tu prof te pide “obra”, aquí la obra es su <span class="underline">impacto futbolístico</span>:
+              Su "obra" principal" es su <span class="underline">impacto futbolístico</span>:
               rendimiento, títulos, récords y legado.
             </p>
           </div>
@@ -99,7 +99,7 @@
             <div class="box box--solid">
               <h3 class="subtitle">Logros (ejemplos)</h3>
               <ul class="list">
-                <li>Máximos goleadores en distintas competencias (récords históricos).</li>
+                <li>Máximo goleador en distintas competencias (récords históricos).</li>
                 <li>Múltiples títulos de liga y torneos internacionales.</li>
                 <li>Reconocimientos individuales por rendimiento.</li>
               </ul>
@@ -157,7 +157,6 @@
           <hr class="divider" />
 
           <p class="lead">
-            (Solo para cumplir el requisito de <span class="underline">form + label + input + button</span>.)
           </p>
 
           <form class="form">
