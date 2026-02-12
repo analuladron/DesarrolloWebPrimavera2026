@@ -50,7 +50,7 @@
               <p>
                 Cristiano Ronaldo dos Santos Aveiro nació en Madeira, Portugal.
                 Es reconocido por su disciplina, mentalidad competitiva y consistencia.
-                <span class="muted">Este sitio resume su vida y obra deportiva.</span>
+                <span class="muted">Este sitio resume su vida y logros deportivos.</span>
               </p>
             </div>
 
@@ -83,7 +83,7 @@
 
           <div class="callout">
             <p class="callout__text">
-              Si tu prof te pide “obra”, aquí la obra es su <span class="underline">impacto futbolístico</span>:
+              Su legado es su <span class="underline">impacto futbolístico</span>:
               rendimiento, títulos, récords y legado.
             </p>
           </div>
@@ -146,7 +146,7 @@
           </div>
 
           <p class="muted">
-            Nota: una imagen desaparece cuando el ancho es menor a 400px (requisito de tu tarea).
+            Nota: una imagen desaparece cuando el ancho es menor a 400px.
           </p>
         </article>
       </section>
@@ -157,9 +157,6 @@
           <hr class="divider" />
 
           <p class="lead">
-            (Solo para cumplir el requisito de <span class="underline">form + label + input + button</span>.)
-          </p>
-
           <form class="form">
             <div class="form__row">
               <label class="form__label" for="nombre">Tu nombre</label>
