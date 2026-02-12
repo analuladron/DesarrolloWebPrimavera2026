@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mostrar y Ocultar Imagen</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        img {
+            width: 300px;
+            margin-top: 20px;
+            display: none; /* La imagen inicia oculta */
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .contenedor-imagen {
+    display: inline-block;
+}
+
+.texto-hover {
+    display: none;
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.contenedor-imagen:hover .texto-hover {
+    display: block;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <h2>Ben Roethlisberger es el MVP del superbowl XL</h2>
+
+    <!-- Botones -->
+    <button onclick="mostrarImagen()">Mostrar imagen</button>
+    <button onclick="ocultarImagen()">Ocultar imagen</button>
+
+    <br>
+
+    <!-- Imagen -->
+    <div class="contenedor-imagen">
+    <img id="imagen"
+         src="https://static01.nyt.com/images/2009/09/10/sports/steelers_span.jpg?quality=75&auto=webp&disable=upscale"
+         alt="Imagen">
+
+    <div class="texto-hover">Estás viendo la imagen</div>
+</div>
+
+    <!-- JavaScript -->
+    <script>
+        function mostrarImagen() {
+            document.getElementById("imagen").style.display = "block";
+        }
+
+        function ocultarImagen() {
+            document.getElementById("imagen").style.display = "none";
+        }
+    </script>
+
+</body>
+</html>
