@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Asincronía</title>
+</head>
+<body>
+
+  <div id="contenedor-llamada"></div>
+
+  <script>
+    fetch("salon.json")
+      .then(respuesta => respuesta.json())
+      .then(datos => {
+
+        const contenedor = document.getElementById("contenedor-llamada");
+
+        // ===== PROFESOR =====
+         const tituloProfesor = document.createElement("h2");
+        tituloProfesor.textContent = "Profesor";
+        tituloProfesor.style.marginTop = "20px";
+        contenedor.appendChild(tituloProfesor);
+        const nombreProfesor = document.createElement("h3");
+        nombreProfesor.textContent = datos.profesor.nombre;
+        nombreProfesor.style.color = "green";
+        contenedor.appendChild(nombreProfesor);
+
+        const tituloInteresesProf = document.createElement("h4");
+        tituloInteresesProf.textContent = "Intereses Profesionales";
+        contenedor.appendChild(tituloInteresesProf);
+
+        for (let i = 0; i < datos.profesor.intereses_profesionales.length; i++) {
+          const interes = document.createElement("p");
+          interes.textContent = datos.profesor.intereses_profesionales[i];
+          contenedor.appendChild(interes);
+        }
+
+        // ===== ALUMNOS =====
+        const tituloAlumnos = document.createElement("h2");
+        tituloAlumnos.textContent = "Alumnos";
+        tituloAlumnos.style.marginTop = "20px";
+        contenedor.appendChild(tituloAlumnos);
+
+        for (let i = 0; i < datos.alumnos.length; i++) {
+
+          const alumnoNombre = document.createElement("h3");
+          alumnoNombre.textContent = datos.alumnos[i].nombre;
+          alumnoNombre.style.color = "blue";
+          contenedor.appendChild(alumnoNombre);
+
+        const tituloInteresesAlum = document.createElement("h4");
+        tituloInteresesAlum.textContent = "Intereses";
+        contenedor.appendChild(tituloInteresesAlum);
+
+          for (let j = 0; j < datos.alumnos[i].intereses.length; j++) {
+            const interesAlumno = document.createElement("p");
+            interesAlumno.textContent = datos.alumnos[i].intereses[j];
+            contenedor.appendChild(interesAlumno);
+          }
+        }
+
+      })
+      .catch(error => {
+        console.log("Error:", error);
+      });
+  </script>
+
+</body>
+</html>
