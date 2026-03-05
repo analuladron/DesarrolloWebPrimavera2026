@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>seleccion-artistas</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-light">
+    <div class="container py-4">
+      <h1 class="mb-2">Selección de artistas</h1>
+      <p class="text-muted mb-4">
+        Guarda tu token en <code>sessionStorage</code> y selecciona un track para
+        consultar la API de Spotify.
+      </p>
+
+      <!-- Alertas -->
+      <div id="alertas" class="mb-3"></div>
+
+      <!-- Sección Token -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Guardar token</h5>
+
+          <div class="row g-2 align-items-center">
+            <div class="col-md-9">
+              <input
+                id="tokenInput"
+                class="form-control"
+                type="text"
+                placeholder="Pega aquí tu token (solo el string, sin 'Bearer ')"
+              />
+              <div class="form-text">
+                Se guardará como <code>spotify_token</code> en sessionStorage.
+              </div>
+            </div>
+            <div class="col-md-3 d-grid">
+              <button id="guardarTokenBtn" class="btn btn-primary">
+                Guardar token
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Select Tracks -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Selecciona un track</h5>
+
+          <select id="trackSelect" class="form-select">
+            <option value="" selected disabled>Elige una canción...</option>
+            <option value="6HU7h9RYQaPRFeh0R3UeAr">Deja vu</option>
+            <option value="6De0lHrwBfPfhrorm9q1XI">Me rehúso</option>
+            <option value="2ITm559tulvatIT1u0JYG2">Baile Inolvidable</option>
+            <option value="3n3Ppam7vgaVa1iaRUc9Lp">Mr. Brightside</option>
+          </select>
+
+          <div class="mt-3 d-grid d-md-flex gap-2">
+            <button id="limpiarBtn" class="btn btn-outline-secondary">
+              Limpiar página
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultado -->
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">Resultado</h5>
+          <div id="resultado" class="mt-3">
+            <p class="text-muted mb-0">
+              Selecciona un track para ver la información aquí.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ===== UI helpers =====
+      function showError(msg) {
+        document.getElementById("alertas").innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            ${msg}
+          </div>
+        `;
+      }
+
+      function showSuccess(msg) {
+        document.getElementById("alertas").innerHTML = `
+          <div class="alert alert-success" role="alert">
+            ${msg}
+          </div>
+        `;
+      }
+
+      function clearAlerts() {
+        document.getElementById("alertas").innerHTML = "";
+      }
+
+      function resetResultado() {
+        document.getElementById("resultado").innerHTML = `
+          <p class="text-muted mb-0">Página limpia. Selecciona un track para ver info.</p>
+        `;
+      }
+
+      // ===== Render =====
+      function renderTrack(data) {
+        const albumType = data.album?.album_type ?? "N/A";
+        const totalTracks = data.album?.total_tracks ?? "N/A";
+        const albumName = data.album?.name ?? "N/A";
+
+        // Artistas vienen en data.artists[]
+        const artists = data.artists ?? [];
+
+        const artistsList = artists
+          .map((a) => {
+            const name = a.name ?? "Artista";
+            const url = a.external_urls?.spotify ?? "#";
+            return `<li class="list-group-item d-flex justify-content-between align-items-center">
+                      <span>${name}</span>
+                      <a class="btn btn-sm btn-outline-primary" href="${url}" target="_blank" rel="noopener noreferrer">
+                        Perfil Spotify
+                      </a>
+                    </li>`;
+          })
+          .join("");
+
+        document.getElementById("resultado").innerHTML = `
+          <div class="mb-3">
+            <div><strong>Tipo de álbum:</strong> ${albumType}</div>
+            <div><strong>Total de canciones:</strong> ${totalTracks}</div>
+            <div><strong>Nombre del álbum:</strong> ${albumName}</div>
+          </div>
+
+          <h6 class="mt-3">Artistas</h6>
+          <ul class="list-group">
+            ${artistsList || `<li class="list-group-item text-muted">No se encontraron artistas.</li>`}
+          </ul>
+        `;
+      }
+
+      // ===== Fetch Spotify =====
+      async function getTrack(trackId) {
+        clearAlerts();
+
+        const token = sessionStorage.getItem("spotify_token");
+        if (!token) {
+          showError("No hay token guardado. Primero guárdalo en sessionStorage.");
+          return;
+        }
+
+        const url = `https://api.spotify.com/v1/tracks/${trackId}`;
+
+        try {
+          const resp = await fetch(url, {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!resp.ok) {
+            throw new Error(
+              `Error HTTP ${resp.status}. Token inválido/expirado o trackId incorrecto.`
+            );
+          }
+
+          const data = await resp.json();
+          renderTrack(data);
+        } catch (error) {
+          // Bootstrap alert roja (lo pide la tarea)
+          showError(`Hubo un error en la llamada a la API: ${error.message}`);
+        }
+      }
+
+      // ===== Eventos =====
+      document.getElementById("guardarTokenBtn").addEventListener("click", () => {
+        clearAlerts();
+
+        const tokenValue = document.getElementById("tokenInput").value.trim();
+        if (!tokenValue) {
+          showError("Pega un token antes de guardar.");
+          return;
+        }
+
+        sessionStorage.setItem("spotify_token", tokenValue);
+        showSuccess("Token guardado en sessionStorage ✅");
+      });
+
+      document.getElementById("trackSelect").addEventListener("change", (e) => {
+        const trackId = e.target.value;
+        if (trackId) getTrack(trackId);
+      });
+
+      document.getElementById("limpiarBtn").addEventListener("click", () => {
+        clearAlerts();
+        document.getElementById("trackSelect").value = "";
+        resetResultado();
+      });
+
+      // Opcional: si ya había token, lo muestra en el input
+      const existingToken = sessionStorage.getItem("spotify_token");
+      if (existingToken) document.getElementById("tokenInput").value = existingToken;
+    </script>
+  </body>
+</html>
