@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API de Mascotas</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fff7ed, #ffe4e6);
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: 60px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      text-align: center;
+    }
+    h1 {
+      color: #e76f51;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+    }
+    .badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 16px;
+      background: #f4a261;
+      color: white;
+      border-radius: 999px;
+      font-weight: bold;
+    }
+    .buttons {
+      margin-top: 30px;
+    }
+    .buttons a {
+      display: inline-block;
+      margin: 10px;
+      padding: 14px 24px;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+    .primary {
+      background: #2a9d8f;
+      color: white;
+    }
+    .secondary {
+      background: #264653;
+      color: white;
+    }
+    .card {
+      margin-top: 35px;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 14px;
+      text-align: left;
+    }
+    code {
+      background: #eee;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🐾 API de Mascotas</h1>
+    <p>Bienvenido al sistema de gestión de solicitudes de adopción de mascotas.</p>
+    <div class="badge">FastAPI + CRUD + CORS</div>
+
+    <div class="buttons">
+      <a class="primary" href="/docs">Ver documentación</a>
+      <a class="secondary" href="/solicitudes">Ver solicitudes</a>
+    </div>
+
+    <div class="card">
+      <h3>Endpoints disponibles</h3>
+      <p><code>POST /solicitudes</code> Crear una solicitud</p>
+      <p><code>GET /solicitudes</code> Obtener todas las solicitudes</p>
+      <p><code>GET /solicitudes/{id}</code> Obtener una solicitud por ID</p>
+      <p><code>PATCH /solicitudes/{id}</code> Actualizar mascota deseada o motivo</p>
+      <p><code>PATCH /solicitudes/{id}/estado</code> Cambiar estado</p>
+      <p><code>DELETE /solicitudes/{id}</code> Eliminar solicitud</p>
+    </div>
+  </div>
+</body>
+</html>
