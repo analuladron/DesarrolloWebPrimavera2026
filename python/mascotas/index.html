@@ -11,62 +11,141 @@
       background: linear-gradient(135deg, #fff7ed, #ffe4e6);
       color: #333;
     }
+
     .container {
-      max-width: 900px;
-      margin: 60px auto;
+      max-width: 950px;
+      margin: 50px auto;
       background: white;
       padding: 40px;
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    h1, h2 {
       text-align: center;
-    }
-    h1 {
       color: #e76f51;
-      margin-bottom: 10px;
     }
+
     p {
+      text-align: center;
       font-size: 18px;
-      line-height: 1.6;
     }
+
     .badge {
-      display: inline-block;
-      margin-top: 10px;
+      display: block;
+      width: fit-content;
+      margin: 15px auto 30px auto;
       padding: 8px 16px;
       background: #f4a261;
       color: white;
       border-radius: 999px;
       font-weight: bold;
     }
+
     .buttons {
-      margin-top: 30px;
+      text-align: center;
+      margin-bottom: 30px;
     }
-    .buttons a {
+
+    .buttons a, .buttons button {
       display: inline-block;
       margin: 10px;
       padding: 14px 24px;
       text-decoration: none;
       border-radius: 12px;
       font-weight: bold;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
     }
+
     .primary {
       background: #2a9d8f;
       color: white;
     }
+
     .secondary {
       background: #264653;
       color: white;
     }
-    .card {
-      margin-top: 35px;
+
+    form {
+      margin-top: 30px;
+      padding: 25px;
+      background: #f9fafb;
+      border-radius: 16px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .submit-btn {
+      background: #e76f51;
+      color: white;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      opacity: 0.92;
+    }
+
+    .resultado, .lista {
+      margin-top: 30px;
       padding: 20px;
       background: #f9fafb;
       border-radius: 14px;
-      text-align: left;
     }
+
+    .card {
+      background: white;
+      border-left: 6px solid #2a9d8f;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    }
+
     code {
       background: #eee;
       padding: 2px 6px;
       border-radius: 6px;
+    }
+
+    .success {
+      color: green;
+      font-weight: bold;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -77,19 +156,128 @@
     <div class="badge">FastAPI + CRUD + CORS</div>
 
     <div class="buttons">
-      <a class="primary" href="/docs">Ver documentación</a>
-      <a class="secondary" href="/solicitudes">Ver solicitudes</a>
+      <a class="primary" href="/docs" target="_blank">Ver documentación</a>
+      <button class="secondary" onclick="cargarSolicitudes()">Ver solicitudes</button>
     </div>
 
-    <div class="card">
-      <h3>Endpoints disponibles</h3>
-      <p><code>POST /solicitudes</code> Crear una solicitud</p>
-      <p><code>GET /solicitudes</code> Obtener todas las solicitudes</p>
-      <p><code>GET /solicitudes/{id}</code> Obtener una solicitud por ID</p>
-      <p><code>PATCH /solicitudes/{id}</code> Actualizar mascota deseada o motivo</p>
-      <p><code>PATCH /solicitudes/{id}/estado</code> Cambiar estado</p>
-      <p><code>DELETE /solicitudes/{id}</code> Eliminar solicitud</p>
+    <h2>Crear solicitud de adopción</h2>
+
+    <form id="formSolicitud">
+      <div class="form-group">
+        <label for="nombrePersona">Nombre de la persona</label>
+        <input type="text" id="nombrePersona" required>
+      </div>
+
+      <div class="form-group">
+        <label for="mascotaDeseada">Mascota deseada</label>
+        <input type="text" id="mascotaDeseada" required>
+      </div>
+
+      <div class="form-group">
+        <label for="motivo">Motivo</label>
+        <textarea id="motivo" required></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn">Enviar solicitud</button>
+    </form>
+
+    <div class="resultado" id="resultado">
+      <h3>Resultado</h3>
+      <p>Aquí aparecerá la respuesta del servidor.</p>
+    </div>
+
+    <div class="lista" id="listaSolicitudes">
+      <h3>Solicitudes registradas</h3>
+      <p>Haz clic en <strong>Ver solicitudes</strong> para cargarlas.</p>
     </div>
   </div>
+
+  <script>
+    const form = document.getElementById("formSolicitud");
+    const resultado = document.getElementById("resultado");
+    const listaSolicitudes = document.getElementById("listaSolicitudes");
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const data = {
+        nombrePersona: document.getElementById("nombrePersona").value,
+        mascotaDeseada: document.getElementById("mascotaDeseada").value,
+        motivo: document.getElementById("motivo").value
+      };
+
+      try {
+        const response = await fetch("/solicitudes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          resultado.innerHTML = `
+            <h3>Resultado</h3>
+            <p class="success">✅ Solicitud creada correctamente</p>
+            <p><strong>ID:</strong> ${result.id}</p>
+            <p><strong>Nombre:</strong> ${result.nombrePersona}</p>
+            <p><strong>Mascota:</strong> ${result.mascotaDeseada}</p>
+            <p><strong>Motivo:</strong> ${result.motivo}</p>
+            <p><strong>Estado:</strong> ${result.estado}</p>
+          `;
+          form.reset();
+          cargarSolicitudes();
+        } else {
+          resultado.innerHTML = `
+            <h3>Resultado</h3>
+            <p class="error">❌ Error al crear la solicitud</p>
+            <pre>${JSON.stringify(result, null, 2)}</pre>
+          `;
+        }
+      } catch (error) {
+        resultado.innerHTML = `
+          <h3>Resultado</h3>
+          <p class="error">❌ Error de conexión con la API</p>
+          <p>${error}</p>
+        `;
+      }
+    });
+
+    async function cargarSolicitudes() {
+      try {
+        const response = await fetch("/solicitudes");
+        const solicitudes = await response.json();
+
+        if (!solicitudes.length) {
+          listaSolicitudes.innerHTML = `
+            <h3>Solicitudes registradas</h3>
+            <p>No hay solicitudes todavía.</p>
+          `;
+          return;
+        }
+
+        listaSolicitudes.innerHTML = `
+          <h3>Solicitudes registradas</h3>
+          ${solicitudes.map(s => `
+            <div class="card">
+              <p><strong>ID:</strong> ${s.id}</p>
+              <p><strong>Nombre:</strong> ${s.nombrePersona}</p>
+              <p><strong>Mascota deseada:</strong> ${s.mascotaDeseada}</p>
+              <p><strong>Motivo:</strong> ${s.motivo}</p>
+              <p><strong>Estado:</strong> ${s.estado}</p>
+            </div>
+          `).join("")}
+        `;
+      } catch (error) {
+        listaSolicitudes.innerHTML = `
+          <h3>Solicitudes registradas</h3>
+          <p class="error">❌ No se pudieron cargar las solicitudes</p>
+          <p>${error}</p>
+        `;
+      }
+    }
+  </script>
 </body>
 </html>
