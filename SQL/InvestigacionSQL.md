@@ -21,15 +21,15 @@
     - Acceso no autorizado al sistema
 - 3 noticias reales
         
-        1. Yahoo (2014)
+       ### 1. Yahoo (2014)
             Uno de los ataques más grandes de la historia afectó a más de 3 mil millones de cuentas. Los atacantes accedieron a información como correos, contraseñas y datos personales.
                 https://www.bbc.com/news/technology-37232635
 
-        2. Sony Pictures (2011)
+      ###  2. Sony Pictures (2011)
             Hackers explotaron vulnerabilidades en su sistema y obtuvieron datos de millones de usuarios, incluyendo contraseñas y correos.
                 https://www.bbc.com/news/technology-13263882
 
-        3. TalkTalk (2015)
+      ###  3. TalkTalk (2015)
             Una empresa de telecomunicaciones en Reino Unido sufrió un ataque SQL Injection que expuso datos financieros y personales de miles de clientes.
                 https://www.bbc.com/news/business-34635803
 
