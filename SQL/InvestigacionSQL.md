@@ -38,8 +38,11 @@
 - El uso de ORM mejora la seguridad al evitar consultas directas concatenadas, reduciendo el riesgo de SQL Injection.
 
 Diferencias:
-    ORM	                                        SQL
-Más fácil de usar	                    Más control directo
-Menos propenso a errores	            Más flexible
-Más seguro (previene SQL Injection)	    Requiere más cuidado
-
+- ORM:	                                        
+    - Más fácil de usar	                   
+    - Menos propenso a errores	            
+    - Más seguro (previene SQL Injection)	   
+- SQL:
+    - Más control directo
+    - Más flexible
+    - Requiere más cuidado
