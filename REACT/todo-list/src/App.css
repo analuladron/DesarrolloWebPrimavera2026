@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7efe5;
+}
+
+.todo-card {
+  width: 420px;
+  margin: 50px auto;
+  padding: 30px;
+  background: repeating-linear-gradient(
+    white,
+    white 34px,
+    #d8d8d8 35px
+  );
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.todo-card h1 {
+  margin: 0;
+  font-size: 42px;
+  color: #d98200;
+}
+
+.subtitle {
+  margin-top: 5px;
+  font-size: 24px;
+  color: #d98200;
+  font-weight: bold;
+}
+
+.tasks-container {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.task-item input {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+}
+
+.task-text {
+  padding: 7px 16px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+.completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
