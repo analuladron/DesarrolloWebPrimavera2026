@@ -1,0 +1,54 @@
+-- Consultas SQL - Base de datos de chismes
+
+-- 13. Promedio del monto de silencio
+SELECT AVG(monto_silencio) AS promedio_monto_silencio
+FROM chismes;
+
+-- 14. Promedio de gravedad por categoría
+SELECT categoria, AVG(gravedad) AS promedio_gravedad
+FROM chismes
+GROUP BY categoria;
+
+-- 15. Categorías con más de 5 chismes
+SELECT categoria, COUNT(chisme) AS total_chismes
+FROM chismes
+GROUP BY categoria
+HAVING total_chismes > 5;
+
+-- 16. Personas que recibieron más de 1000 en pagos de silencio
+SELECT persona, SUM(monto_silencio) AS total_recibido
+FROM chismes
+GROUP BY persona
+HAVING total_recibido > 1000;
+
+-- 17. Chismes con testigos distintos de cero
+SELECT *
+FROM chismes
+WHERE testigos <> 0;
+
+-- 18. Chismes de gravedad entre 2 y 4
+SELECT *
+FROM chismes
+WHERE gravedad BETWEEN 2 AND 4;
+
+-- 19. Chismes de la categoría trabajo
+SELECT *
+FROM chismes
+WHERE categoria = 'trabajo';
+
+-- 20. Chismes contados por lugar
+SELECT lugar, COUNT(chisme) AS total_chismes
+FROM chismes
+GROUP BY lugar;
+
+-- 21. Lugares donde se dijeron más de 3 chismes
+SELECT lugar, COUNT(chisme) AS total_chismes
+FROM chismes
+GROUP BY lugar
+HAVING total_chismes > 3;
+
+-- 22. Personas que dijeron chismes con promedio de gravedad mayor a 3
+SELECT persona, AVG(gravedad) AS promedio_gravedad
+FROM chismes
+GROUP BY persona
+HAVING promedio_gravedad > 3;
